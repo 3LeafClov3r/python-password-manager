@@ -1,0 +1,2 @@
+USR,EMAIL,PSWD,URL,TAGS,SALT,ROWHASH
+user,email@example.com,password,https://example.com/login,"[Banking, Gaming]",salt,cae1ab323876cf242aadbadc2165cb74e04fccac35b10174d722327f7015033b

@@ -1,19 +1,38 @@
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
-
-data = b'secret data'
-
-key = get_random_bytes(16)
-
-print(f"key: {key}")
-cipher = AES.new(key, AES.MODE_EAX)
-
-ciphertext, tag = cipher.encrypt_and_digest(data)
-print(f"ciphertext = {ciphertext}")
-nonce = cipher.nonce
+import pandas as pd
+import hashlib
 
 
-cipher1 = AES.new(key, AES.MODE_EAX, nonce)
+df = pd.DataFrame(pd.read_csv('encryptedinfo/pswd.csv'))
+# USR,EMAIL,PSWD,URL,TAGS,ROWHASH
+user = "user"
+email = "email@example.com"
+password = "password"
+URL = "https://example.com/login"
+TAGS = "[Banking, Gaming]"
+salt = "salt"
+stringex = (user + email + password + URL + TAGS + salt).encode(encoding="utf-8")
+print(stringex)
+hash = hashlib.sha256()
+hash.update(stringex)
+new_row = {'USR': user, 'EMAIL': email, 'PSWD': password, 'URL': URL, 'TAGS': TAGS, 'SALT': "salt"}
 
-data = cipher1.decrypt_and_verify(ciphertext, tag)
-print(data)
+df.loc[len(df)] = new_row
+df.to_csv('encryptedinfo/pswd.csv', index=False)
+
+# df = pd.DataFrame(pd.read_csv('encryptedinfo/pswd.csv'))
+# print(df)
+
+m = hashlib.sha256()
+m.update(b"a")
+print(m.hexdigest())
+
+
+
+obj = AES.new(b'This is a key123', AES.MODE_CBC, b'This is an IV456')
+message = b"The answer is no"
+ciphertext = obj.encrypt(message)
+print(ciphertext)
+obj2 = AES.new(b'This is a key123', AES.MODE_CBC, b'This is an IV456')
+print(obj2.decrypt(ciphertext))
