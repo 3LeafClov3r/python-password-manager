@@ -44,3 +44,7 @@ def verify_hash(msg, secret_key, mac_hash):
     except ValueError:
         print("The message or the key is wrong")
         return False
+
+def change_encryption_key_and_re_encrypt(old_secret_key, new_secret_key):
+    df = return_decrypted_dataframe("encrypted.bin", old_secret_key)
+    write_encrypted_file(df, new_secret_key, "encrypted.bin")
